@@ -1,0 +1,16 @@
+*{
+background-color: #fd00ff;
+color:  	#3cff00;
+}
+#goregif2{
+    width: 1px;
+    height: 1px;
+
+}
+#goregif{
+    width: 200px;
+    height: 200px;
+    border: dashed black;
+    border-width: 4px;
+    border-radius: 60px;
+}

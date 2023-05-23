@@ -1,0 +1,4 @@
+Contact: mailto:julia@julz.cafe
+Expires: 2027-05-21T22:00:00.000Z
+Encryption: https://julz.cafe/publickey.Julia@julz.cafe-f03503941480f4b44a0ba56f431c287f0232b8d3.asc
+Preferred-Languages: en, de

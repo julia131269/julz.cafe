@@ -1,0 +1,2 @@
+(n_f462f54fae28034c1e356af08f2fe4dc477a7742.kadename.ACCOUNT_GUARD "account")
+(coin.transfer user kadename-gas 5.0)

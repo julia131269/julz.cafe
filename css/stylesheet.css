@@ -1,0 +1,93 @@
+/*https://www.sessions.edu/color-calculator/*/
+#upperHeader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: hsl(359, 100%, 96%);
+  box-shadow: 1px 1px 1px hsl(359, 100%, 86%);
+  margin-bottom: 5px;
+  padding: 5px;
+}
+html{
+  background-color: hsl(359, 80%, 97%);
+
+}
+
+header{
+  font-family: "Twemoji Mozilla",
+               "Apple Color Emoji",
+               "Segoe UI Emoji",
+               "Segoe UI Symbol",
+               "Noto Color Emoji",
+               "EmojiOne Color",
+               "Android Emoji";
+}
+
+nav{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1em;
+  background-color: hsla(315, 100%, 93%, 0.8);
+  box-shadow: 1px 1px 1px hsl(315, 100%, 84%);
+  padding: 0.3em;
+  font-size: 18pt;
+}
+nav div {
+
+  background-color: hsla(150, 100%, 93%, 1);
+  padding: 0.2em;
+  border-radius: 5px;
+
+}
+
+nav div:hover {
+
+  background-color: hsla(150, 100%, 85%, 1);
+
+
+}
+
+nav a {
+  text-decoration: none;
+  color: #ffadeb;
+}
+
+main {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  justify-content: space-around;
+  gap: 1rem;
+  padding-top: 1rem;
+  text-rendering: optimizeLegibility;
+}
+
+.mainFlex{
+  background-color: hsla(210, 100%, 80%, 1);
+  border-radius: 20px;
+  padding: 0.4em;
+  color: white;
+  font-family: monospace, sans-serif;
+  /*flex-basis: 80%;*/
+}
+
+.subFlex{
+  background-color: hsla(210, 100%, 85%, 1);
+  border-radius: 20px;
+  padding: 0.4em;
+  color: white;
+  font-family: monospace, sans-serif;
+}
+
+#Infobox{
+  display: flex;
+  flex-flow: column wrap;
+  gap: 1rem;
+
+}
+
+#intro{
+  text-align: center;
+  max-width: 80%;
+}

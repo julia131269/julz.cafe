@@ -1,0 +1,220 @@
+#upperHeader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: hsl(359, 100%, 96%);
+  box-shadow: 1px 1px 1px hsl(359, 100%, 86%);
+  margin-bottom: 5px;
+
+}
+html{
+  background-color: hsl(359, 80%, 97%);
+  scroll-behavior: smooth;
+}
+
+header{
+  font-family: "Twemoji Mozilla",
+               "Apple Color Emoji",
+               "Segoe UI Emoji",
+               "Segoe UI Symbol",
+               "Noto Color Emoji",
+               "EmojiOne Color",
+               "Android Emoji";
+}
+
+nav{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1em;
+  background-color: hsla(315, 100%, 93%, 0.8);
+  box-shadow: 1px 1px 1px hsl(315, 100%, 84%);
+  padding: 0.3em;
+  font-size: 18pt;
+}
+nav div {
+
+  background-color: hsla(150, 100%, 93%, 1);
+  padding: 0.2em;
+  border-radius: 5px;
+
+}
+
+nav div:hover {
+
+  background-color: hsla(150, 100%, 85%, 1);
+  color: #ffadeb;
+
+}
+
+nav a {
+  text-decoration: none;
+  color: #ffadeb;
+}
+/*GUESTBOOK CSS BELOW*/
+body {
+  /*background-color: hsl(220, 15%, 90%);
+  font: 11pt sans-serif;*/
+}
+
+#header {
+  font-weight: bold;
+  color: hsl(220, 10%, 50%);
+  /*font: 11pt sans-serif;
+  font-size: 9pt;*/
+  background-color: white;
+  margin-top: 5px;
+  /*---------------------------------------------------------------------
+  Below fix for making header same size as post. remove if not centered
+  max-width: 666px;
+  -----------------------------------------------------------------------*/
+}
+
+
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /*align-items: center;*/
+  margin: 0.39em 0.78em;
+  padding: 0;
+  margin: 0;
+  font: 11pt sans-serif;
+  line-height: inherit;
+  color: inherit;
+  border: none;
+  background-color:transparent;
+
+}
+
+.hidden{
+  display: none;
+}
+
+.failed{
+  background-color: hsl(360, 73%, 52%);
+  margin: 1px 0;
+  min-width: 666px;
+  box-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.1);
+  max-width: 50vw;
+  text-decoration: none;
+}
+
+.blinking {
+  animation: hue-change 3s infinite;
+}
+
+@keyframes hue-change {
+  0% { background-color: white; }
+  50% { background-color: hsl(34, 0%, 76%); }
+  100% { background-color: white; }
+  /*100% { background-color: hsl(34, 0%, 34%); }*/
+}
+
+.post {
+  margin: 1px 0;
+  background-color: white;
+  min-width: 666px;
+  box-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.1);
+  max-width: 50vw;
+  text-decoration: none;
+}
+
+.post-meta {
+  padding: 0.39em 0.5em;
+  line-height: 100%;
+  font-size: 8pt;
+  color: hsl(0, 0%, 50%);
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-username {
+  margin: 0.61em 1.61em;
+  word-wrap: break-word;
+  font-weight: bolder;
+}
+
+.post-message {
+  margin: 0.61em 1.61em;
+  word-wrap: break-word;
+  line-height: 1.2;
+}
+
+.post-message a {
+  color: hsl(200, 50%, 39%);
+}
+
+.post-meta a {
+  color: hsl(200, 50%, 39%);
+  text-decoration: none;
+}
+
+button:hover, a:hover {
+  cursor: pointer;
+  color: black;
+}
+
+img {
+  display:block;
+  padding: 0.39em;
+  word-wrap: break-word;
+  max-width: 90%;
+  max-height: 20em;
+}
+
+.button, .post {
+  border-radius: 3px;
+}
+form, h1{
+  margin: 0;
+}
+
+.button {
+  background-color: hsl(260, 30%, 61%);
+  color: white;
+  padding: 0.2em 0.39em;
+}
+
+.button:hover {
+  color:white;
+  background-color: hsl(255, 45%, 61%);
+}
+/* Ty <3*/
+.ui_container{
+  background-color: white;
+  width: 666px;
+  display: flex;
+  flex-flow: row wrap;
+  margin-bottom: 2px;
+  padding: 2px;
+  box-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.1);
+  border-radius: 3px;
+  padding: 1.61em;
+
+
+  color: hsl(220, 10%, 50%);
+  /*font: 11pt sans-serif bold;*/
+  font-family: sans-serif;
+  font-size: 9pt;
+  font-weight: bold;
+}
+
+.form_container{
+  display_flex;
+  flex-direction: column wrap;
+  width: 400px;
+
+}
+.info_container{
+  width: 240px;
+
+}
+#charcount{
+  color: black;
+}

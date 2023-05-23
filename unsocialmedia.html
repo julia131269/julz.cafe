@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<head>
+  <title>Unsocial Media</title>
+  <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+  <link rel="stylesheet" type="text/css" href="css/unsocialMedia.css">
+  <link rel = "icon" href =  "icons1/indexIcon.jpg" type = "image/x-icon">
+</head>
+<body>
+<header>
+<div id="upperHeader" class="header">
+  <a href="index.html"><img src="headerpics/coffeecup.png" style="height:150px;"></a>
+  <a href="index.html"><img src="headerpics/coffeegirl.jpg" style="height:150px;"></a>
+	<a href="index.html"><img src="headerpics/logo.gif" style="height:150px;"/></a>
+	<a href="index.html"><img src="headerpics/coffeegirl.jpg" style="height:150px;"></a>
+  <a href="index.html"><img src="headerpics/coffeecup.png" style="height:150px;"></a>
+</div>
+<div id="lowerHeader" class="header">
+  <nav>
+    <a href="index.html"><div>Home &#127968;</div></a>
+    <a href="unsocialmedia.html"><div style="background-color:hsla(220, 100%, 60%, 1)">Unsocial Media and contact &#9993;</div></a>
+    <a href="gallery.html"><div>Gallery <span style="color:none;">&#128444;</span></div></a>
+    <a href="guestbook.html"><div>Blockchain Guestbook &#129002;<span style="color:initial;">&#9939;</span>&#128376;</div></a>
+    <a href="drugs.html"><div>Drugs I have done &#128138;</div></a>
+    <a href="love.html"><div>Things I love and like &#128525;</div></a>
+    <!--<a href=""><div>placeholder2</div></a>-->
+  </nav>
+</div>
+</header>
+<main>
+  <div class="mainFlex">
+    <a href="https://www.instagram.com/julzpewpew/" target="_blank"><img src="/icons1/instagram.jpg" style="border-radius:30px;"></a>
+  </div>
+  <div class="mainFlex">
+    <a href="https://steamcommunity.com/id/samusaranish/" target="_blank"><img src="icons1/steam.png" style="border-radius:80px;"></a>
+  </div>
+  <div class="mainFlex">
+    <a href="https://twitter.com/ggffjulz" target="_blank"><img src="icons1/twitter.png" style="border-radius:15px;"></a>
+  </div>
+  <div class="mainFlex">
+    <a href="https://soundcloud.com/realjulzzz" target="_blank"><img src="icons1/soundcloud.png" style="border-radius:100px;"></a>
+  </div>
+  <div class="mainFlex">
+    <a href="https://discord.gg/7pwCeaMQzS" target="_blank"><img src="icons1/discord.png" style="border-radius: 300px / 250px;"></a>
+  </div>
+  <div class="mainFlex">
+    <a href="https://www.reddit.com/user/bpdjunkie1312" target="_blank"><img src="icons1/reddit.png" style="border-radius:100px;"></a>
+  </div>
+  <div class="mainFlex">
+      <div class="tooltip">
+        <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+        <a href="javascript:copyTag();" onmouseout="displayCopy()"><img src="icons1/discord2.png" style="border-radius: 300px / 250px;"></a>
+      </div>
+  </div>
+  <input type="text" value="Queen Julia#1337" id="myDiscordTag" style="display: none;">
+</main>
+<script>
+function copyTag() {
+  // Get the text field
+  var copyText = document.getElementById("myDiscordTag");
+
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+
+   // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copied: " + copyText.value;
+}
+function displayCopy() {
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copy to clipboard";
+}
+</script>
+</body>

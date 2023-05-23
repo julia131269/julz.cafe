@@ -1,0 +1,32 @@
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: hsl(359, 100%, 96%);
+  box-shadow: 1px 1px 1px hsl(359, 100%, 90%);
+  margin: 0px;
+}
+html{
+  background-color: hsl(359, 80%, 97%);
+}
+nav{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  background-color: hsla(315, 100%, 93%, 0.8);
+  box-shadow: 1px 1px 1px hsl(315, 100%, 84%);
+  padding: 5px;
+}
+nav div {
+
+  background-color: hsla(150, 100%, 93%, 1);
+  padding: 7px;
+  border-radius: 5px;
+
+}
+
+nav a {
+  text-decoration: none;
+  color: #ffadeb;
+}

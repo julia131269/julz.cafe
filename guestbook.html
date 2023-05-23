@@ -1,0 +1,292 @@
+<head>
+  <title>Blockchain Guestbook</title>
+  <link rel="stylesheet" type="text/css" href="css/guestbookstyle.css">
+  <link rel = "icon" href ="icons1/indexIcon.jpg" type = "image/x-icon">
+  <meta charset="utf-8"/>
+  <script src="https://cdn.jsdelivr.net/npm/pact-lang-api@4.1.2/pact-lang-api-global.min.js" integrity="sha384-l9uady/O23cYvkndP50C0X1fV21UNztNgTG9Zwcsh3CZsTy3KvNG2+JROCuPQKH4" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/anchorme@2.1.2/dist/browser/anchorme.min.js" crossorigin="anonymous"></script>
+
+  <script>
+  //use the code below for frontend to access testnet instead of mainnet
+  //const host = `https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact`;
+  //don't forget to change the chain in the url
+  const host = `https://api.chainweb.com/chainweb/0.0/mainnet01/chain/17/pact`;
+  const creationTime = () => Math.round(Date.now() / 1000) - 15;
+  const fetchPosts = async (server) => (await Pact.fetch.local({
+      pactCode: `(free.de-guestbook.getallmessages)`,
+      meta: Pact.lang.mkMeta("", "", 0.0001, 150000, creationTime(), 600)
+    }, server)).result.data
+    .sort((b, a) => a.bh.int - b.bh.int)
+  //code to inline imgur direct image links. and a deprecated version of mentioning other posts
+  //https://stackoverflow.com/questions/64965671/javascript-extract-strings-that-match-regex-from-text
+  const achromeOptions = {
+    extensions: [
+      {
+        test: /&gt;&gt;([\d])+/gi,
+        transform: string =>
+            `<a href="#${string.substr(8)}" onclick="highlightDiv(${string.substr(8)});">${string}</a>`
+      }
+    ],
+    options: {
+      attributes: {
+        target: "_blank"
+      },
+      exclude: true,
+      specialTransform: [{
+        test: /^https:\/\/i\.imgur\.com/,
+        transform: string =>
+          `<img src="${string}" alt="image"/>`
+      },
+      {
+        test: /./,
+        transform: string =>
+          `<a href="${string}" target="_blank">${string}</a>`
+      }]
+    }
+  }
+
+  /*
+  const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate lorem leo, eu tincidunt ante ullamcorper a. Praesent blandit ultrices tortor non dictum. Mauris ut nunc ac lacus hendrerit pharetra. Maecenas dapibus consequat metus nec consectetur. Nunc bibendum, dolor sit amet cursus blandit, nibh sapien condimentum ligula, vel pulvinar felis eros quis nisl. In suscipit libero non ex porttitor, nec lobortis ante gravida. Sed hendrerit ligula nec justo scelerisque placerat. Aliquam erat volutpat. Aenean ut nunc ac urna venenatis condimentum. Nam pulvinar nisl at aliquet volutpat. Mauris sed lacus id justo interdum volutpat. Nam eget erat elit. Donec a eleifend neque. Praesent eu massa sed est lobortis imperdiet. Maecenas pellentesque metus facilisis turpis volutpat iaculis. Morbi viverra dolor a odio eleifend elementum. Aliquam augue leo, pretium eu vehicula in, malesuada vel ipsum. Proin aliquam condimentum nisl, sit amet tincidunt metus porta ut. Aenean est lacus, lacinia et nibh at, eleifend lacinia eros. Pellentesque pretium, nibh ut vestibulum suscipit, eros velit luctus tellus, sit amet suscipit turpis erat sit amet dolor. Maecenas posuere nibh elit, vitae dictum ligula finibus quis. Donec nibh mauris, lacinia vel felis eget, fermentum consequat ante.`
+    .split(". ").map(s => s.trim()+ ".").concat([`<img src="https://placewaifu.com/image/333/200" />`])
+  */
+
+  //const randomRange = (a, b) => a + Math.random() * (b - a)
+  //const sample = (pop, n) => Array.from({length: n}, () => pop[Math.floor(randomRange(0, pop.length))])
+  //const randomParagraph = (n) => sample(lorem, n).join(" ")
+
+  //code to replace unsafe html tags. Add your own filters here.
+  const escapeHTML = (unsafe) => {
+    return unsafe.replace(/&/g, "&amp;")
+     .replace(/</g, "&lt;")
+     .replace(/>/g, "&gt;")
+     .replace(/"/g, "&quot;")
+     .replace(/'/g, "&#039;")
+  }
+  const formatMessage = (message) => anchorme(Object.assign(achromeOptions, {input: escapeHTML(message.trim())})).replace(/\n/g, "<br/>")
+  //code to render single posts
+  //Change the url to https://explorer.chainweb.com/testnet/chain/1/height/ if using testnet
+  //don't forget to add the current chain
+  //change "ja-JP" to a time format of your choice!
+  const renderPost = (post) => `
+    <div class="post" id="${post.id}">
+      <div class="post-meta">
+        <div>
+          ID:(<a href="https://explorer.chainweb.com/mainnet/chain/17/height/${post.id}" target="_blank">${post.id}</a>)
+          <a href="javascript:citeBlock(${post.id})">(↩)</a>
+        </div>
+        <span>${post.time.toLocaleString("ja-JP")}</span>
+      </div>
+      <div class="post-username">${formatMessage(post.username)}:</div>
+      <div class="post-message">${formatMessage(post.message)}</div>
+    </div>
+  `
+
+
+
+
+  /*
+  const randomPost = () => ({
+    id: randomRange(1689351, 1689351+10000).toFixed(1).replace(".", "_"),
+    message: randomParagraph(randomRange(1., 2.5)**2),
+    time: new Date(Date.now() - randomRange(0, 100000))
+  })
+  */
+
+
+  //Renders the entire main body of the webpage containing all messages
+  const render = (posts) => `
+    <main>
+      ${posts.map(renderPost).join("")}
+    </main>
+  `
+
+  fetchPosts(host).then((posts) => document.body.innerHTML += render(
+    posts.map(p => ({id: p.bh.int, username: p.username, message: p.message, time: new Date(p.timestamp.timep)}))
+  ))
+  //code that gets executed when send gets pressed. Sends a request to the gas station.
+  //
+  const payGas = async () => {
+      const kp = Pact.crypto.genKeyPair();
+      var message = document.getElementById("message-input").value;
+      var username = document.getElementById("username-input").value;
+
+      const tx = await Pact.fetch.send(
+        {
+          //networkId: "testnet04", if using testnet
+          //replace free.de-guestbook with your contract name
+          //replace free.de-guestbook-gas-station with the name of your gas station contract
+          networkId: "mainnet01",
+          pactCode: `(free.de-guestbook.newMessage ${JSON.stringify(message)} ${JSON.stringify(username)})`,
+          keyPairs: [
+            {
+              publicKey: kp.publicKey,
+              secretKey: kp.secretKey,
+              clist: [
+                //capability to use gas station
+                {
+                  name: `free.de-guestbook-gas-station.GAS_PAYER`,
+                  args: ["hi", { int: 1 }, 1.0]
+                }
+              ]
+            }],
+            //you may want to adjust gas price below in the future. Make sure gas price and limit isn't higher than what your gas station allows
+            //change 17 to whatever chain you are using
+          meta: Pact.lang.mkMeta
+            (
+              "guestbook-gas-payer",
+              "17",
+              0.00000001,
+              5000,
+              creationTime(),
+              28800
+            )
+        }, host);
+        //window.alert("Transaction has been successfully sent to the Kadena blockchain. Please wait 1 MINUTE for the transaction to get mined into a block. Then hit refresh and your message should appear!");
+        document.getElementById("newPost").classList.remove("hidden");
+        document.getElementById("newPost").classList.add("blinking");
+        document.getElementById("newPost-name").textContent = username;
+        document.getElementById("newPost-message").innerHTML = formatMessage(message);
+        document.getElementById("newPost-id").textContent = "PENDING";
+        document.getElementById("newPost-time").textContent = "Post submitted to the Kadena Blockchain, please wait";
+        try {
+          let hello = await Pact.fetch.listen({ "listen": tx.requestKeys[0] }, host);
+          if (hello.result.status !== "success") {
+            console.log(JSON.stringify(hello));
+            document.getElementById("newPost").classList.remove("blinking");
+            document.getElementById("newPost").classList.remove("post");
+            document.getElementById("newPost").classList.add("failed");
+            document.getElementById("newPost-time").textContent = "Transaction failed!";
+          }
+          else {
+            console.log(JSON.stringify(hello.result.data));
+            document.getElementById("newPost").classList.remove("blinking");
+            document.getElementById("newPost-id").innerHTML = `ID:(<a href="https://explorer.chainweb.com/mainnet/chain/17/height/` + JSON.stringify(hello.metaData.blockHeight) + `" target="_blank">` + JSON.stringify(hello.metaData.blockHeight) + `</a>)`;
+            let postTime =  new Date();
+            document.getElementById("newPost-time").textContent = postTime.toLocaleString("ja-JP");
+          }
+        } catch (e) {
+          console.log(e)
+        }
+  }
+
+  //minimum and maximum character count. User get's notified if outside of limits.
+  const MaxMsgCount = 1024;
+  const MinMsgCount = 8;
+  const MinUsrCount = 2;
+
+  //function to update char count in real time for message input
+  function updateCharCountMsg(el) {
+    const count = el.value.length;
+    var msg = '';
+    if (count < MinMsgCount) {
+      msg = 'Your message is too short.';
+    } else if (count < (MaxMsgCount - MinMsgCount) / 2 + MinMsgCount) {
+      msg = 'You can type a lot more.';
+    } else {
+      const left = MaxMsgCount - count;
+      msg = 'You are allowed ' + left + ' more characters.';
+    }
+
+    document.getElementById('message-input-char-count').innerHTML = count;
+    document.getElementById('message-input-char-count-message').innerHTML = msg;
+
+    return true;
+  }
+  //function to update char count in real time for username input
+  function updateCharCountUsr(el) {
+    const count2 = el.value.length;
+    var msg2 = '';
+    if (count2 < MinUsrCount) {
+      msg2 = 'Your Username is too short.';
+    } else{
+      msg2 = '';
+    }
+
+    document.getElementById('username-input-char-count-message').innerHTML = msg2;
+
+    return true;
+  }
+
+  function citeBlock(blockId) {
+          const textNode = document.getElementById('message-input');
+          const text = textNode.value;
+
+          if (text.length == 0) textNode.value += '>>' + blockId + ' \n';
+          else if (text[text.length - 1] == ' ') textNode.value += '>>' + blockId + ' \n';
+          else textNode.value += '>>' + blockId + ' \n';
+
+          updateCharCountMsg(textNode);
+        }
+
+              function sleep(ms) {
+          return new Promise(
+            resolve => setTimeout(resolve, ms)
+          );
+        }
+
+  async function highlightDiv(id){
+    document.getElementById(id).style.backgroundColor='hsl(220, 15%, 90%)';
+     await sleep(3000);
+    document.getElementById(id).style.backgroundColor='white';
+    }
+  </script>
+
+</head>
+
+<header>
+
+<div id="upperHeader" class="header">
+  <a href="index.html"><img src="headerpics/coffeecup.png" style="height:150px;"></a>
+  <a href="index.html"><img src="headerpics/coffeegirl.jpg" style="height:150px;"></a>
+	<a href="index.html"><img src="headerpics/logo.gif" style="height:150px;"/></a>
+	<a href="index.html"><img src="headerpics/coffeegirl.jpg" style="height:150px;"></a>
+  <a href="index.html"><img src="headerpics/coffeecup.png" style="height:150px;"></a>
+</div>
+<div id="lowerHeader" class="header">
+  <nav>
+    <a href="index.html"><div>Home &#127968;</div></a>
+    <a href="unsocialmedia.html"><div>Unsocial Media and contact &#9993;</div></a>
+    <a href="gallery.html"><div>Gallery <span style="color:none;">&#128444;</span></div></a>
+    <a href="guestbook.html"><div style="background-color:hsla(220, 100%, 60%, 1)">Blockchain Guestbook &#129002;<span style="color:white;">&#9939;</span>&#128376;</div></a>
+    <a href="drugs.html"><div>Drugs I have done &#128138;</div></a>
+    <a href="love.html"><div>Things I love and like &#128525;</div></a>
+    <!--<a href=""><div>placeholder2</div></a>-->
+  </nav>
+</div>
+
+<div class="ui_container" id="header">
+  <h1 id="heading">Blockchain Guestbook</h1>
+  <div style="width:300px ;"></div>
+  <div class="form_container">
+    <form  id="input" onsubmit="return false">
+      <div><p>Name:</p></div>
+      <div><textarea id="username-input" rows="1" maxlength="30" onkeyup="updateCharCountUsr(this);" style="resize: none;">Anon</textarea></div>
+      <div><p>Message:</p></div>
+      <div><textarea placeholder="Your message" id="message-input" onkeyup="updateCharCountMsg(this);" maxlength="1024"
+                 style="margin-bottom: 0.5rem; min-height:100px;resize: block; width:90%;" rows="3"></textarea></div>
+      <div><button class="button" id="pay-gas" onclick="payGas()">
+                 Send
+      </button></div>
+    </form>
+  </div>
+  <div class="info_container">
+    <p>This guestbook runs on the Kadena blockchain. Any Information submitted is publicly available for everyone to see without a way to undo it. Use at your own responsibility, I am not responsible for any content shown here.</p>
+    <p>Direct links to <b><a href="https://imgur.com/upload" target="_blank" style="text-decoration: none;">i.imgur.com</a></b> will be automatically inlined.</p>
+    <p id="charcount">You've typed <span id="message-input-char-count">0</span> characters.</p>
+    <p id="charcount"><span id='message-input-char-count-message'>Your message is too short.</span></p>
+    <p id="charcount"><span id='username-input-char-count-message'></span></p>
+  </div>
+</div>
+
+</header>
+<main>
+<div class="post hidden" id="newPost">
+  <div class="post-meta">
+    <div>
+      <span id="newPost-id"></span>
+    </div>
+    <span id="newPost-time"></span>
+  </div>
+  <div class="post-username"><span id="newPost-name"></span>:</div>
+  <div class="post-message"><span id="newPost-message"></span></div>
+</div>
